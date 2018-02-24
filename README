@@ -1,0 +1,98 @@
+TEMA 2 - POO
+CRISTIAN PAVEL - 324CB
+
+Interfete:
+
+Observer:
+	Observatori din feed. Metoda print pentru a putea fi printati si metoda
+putFromFeed pentru a putea copia stock-urile generale in fiecare observer.
+
+Visitor:
+	Vizitator al unui arbore cu nodurile AND, OR si BooleanNode.
+
+Operator:
+	Contine metoda valid care verifica daca un nume si o valoare e satis-
+facuta de un anumit operator.
+
+Visitable:
+	Implementata de noduri, pentru a putea fi vizitate.
+	
+Factories:
+
+ObserverFactory:
+	Creez un Observer de tip User. Aici creez si arborele pornind de la ex-
+presia primita de la tastatura. Folosesc un algoritm recursiv de Divide et 
+Impera. La fiecare pas, separ expresia in doua (daca mai am cum), si apelez 
+aceeasi functie pentru partea dreapta si partea stanga. Cand ajung la un opera-
+tor creez un nod de acel tip si il returnez.
+
+OperatorsFactory:
+	Creez Operatori in functie de  Stringul primit. Ex. "le value 4.5" ->
+-> LEOperator.
+
+
+Clase:
+
+MainClass:
+	Clasa in care citesc si in functie de input actualizez feed-ul, creez 
+observatori sau printez. Citesc linie cu line, o sparg in cuvinte si o inter-
+pretez.
+
+Feed:
+	Aici am o TreeMap de stock-uri generale, valabile pentru fiecare obser-
+vator. La o comanda de tip "feed GOLD 4.9" o sa introduc un Stock cu numele GOLD
+si valoare 4.9 in feed. Daca GOLD exista deja doar o sa schimb valoarea. Am 
+folosit TreeMap pentru usurarea printarii in ordine alfabetica. Mai am un 
+HashMap cu observatorii. Am folosit HashMap pentru usurarea accesarii, sterge-
+rii unui observator. La adaugarea unui observator in feed, o sa copiez toate
+stock-urile din feed in observator, pentru a putea printa nr de schimbari si
+increase-ul dependent de fiecare observator. La printare apelez metoda print 
+din fiecare observer cu vectorul de stock-uri din TreeMap. Am ales sa conver-
+tesc la vector pentru a fi mai generala interfata de Observer.
+
+User - implements Observer:
+	Un tip de Observer. Am un TreeMap de stock-uri in care retin ori ultima
+valoare printata, ori, daca nu am printat inca nimic, valoarea stock-urilor in 
+momentul crearii observatorului. Ma ajuta la calcularea nr de schimbari si a 
+increase-ului. In atributul filter am arborele prin care verific daca un stock
+trece de filtru. In metoda de printare iau fiecare stock din cele din feed.
+Iau numarul total de schimbari, si fac diferenta de la ultima valoare printata,
+daca e cazul. La increase verific daca valoarea din lastPrinted a fost printata
+sau nu.
+
+Stock:
+	Clasa pentru un stock. Am setteri si getteri. La fiecare modificare a
+valorii, cresc nrChanges. De asemenea, implementez clasa Cloneable, pentru ca
+stock-urile sa poata fi copiate (la user am nevoie, cand iau stock-urile gene-
+rale).
+
+Node - implements Visitable:
+	Clasa pentru Node. E facuta pentru a fi extinsa, ea nefiind folosita
+de sine statatoare.
+
+AndNode - extends Node, implements Visitable:
+	Clasa pentru un nod de tip AND.
+
+ORNode - extends Node, implements Visitable:
+        Clasa pentru un nod de tip OR.
+
+BooleanNode - extends Node, implements Visitable:
+        Clasa pentru un nod in care retin Operator. Aici o sa primesc raspuns
+boolean la acceptare, in functie de functia valid a operatorului.
+
+TreeVisitor - implements Visitor:
+	In functie de nodul la care ma aflu, il vizitez dupa o anumita regula.
+Daca e AND, o sa apelez accept-ul copiilor cu acelasi visitor si fac AND intre
+rezultate. La OR fac OR intre rezultate. La BooleanNode, iau rezultatul opera-
+torului. Am 2 atribute pentru a putea vizita frunzele.
+
+Operators (le, ge, gt..) - implements Operator:
+	In functie de fiecare Operator, am un atribut pentru nume, sau valoare,
+prin care verific daca un stock e acceptat de operator.
+
+
+
+THE END
+
+
+
